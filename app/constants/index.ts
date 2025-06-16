@@ -1,4 +1,5 @@
 import type { AxisModel } from "@syncfusion/ej2-react-charts";
+import { formatDate } from "lib/utils";
 
 export const sidebarItems = [
   {
@@ -140,3 +141,99 @@ export const RIGHT_CONFETTI = {
   angle: 135,
   origin: { x: 1, y: 1 },
 };
+export const user = { name: "Samuel" };
+
+export const dashboardStats = {
+  totalUsers: 12450,
+  userJoined: { currentMonth: 218, lastMonth: 176 },
+  totalTrips: 3210,
+  tripsCreated: { currentMonth: 150, lastMonth: 250 },
+  userRole: { total: 62, currentMonth: 25, lastMonth: 250 },
+};
+
+export const allTrips = [
+  {
+    id: 1,
+    name: "Trip 1",
+    imageUrls: ["/assets/images/sample.jpeg"],
+    itinerary: [{ location: "New York" }, { location: "Boston" }],
+    tags: ["Adventure", "Culture"],
+    travelStyle: "Solo",
+    estimatedPrice: "$1,000",
+  },
+  {
+    id: 2,
+    name: "Trip 2",
+    imageUrls: ["/assets/images/sample.jpeg"],
+    itinerary: [{ location: "Paris" }, { location: "Lyon" }],
+    tags: ["Romantic", "Luxury"],
+    travelStyle: "Couple",
+    estimatedPrice: "$2,500",
+  },
+  {
+    id: 3,
+    name: "Trip 3",
+    imageUrls: ["/assets/images/sample.jpeg"],
+    itinerary: [{ location: "Tokyo" }, { location: "Kyoto" }],
+    tags: ["Family", "Cultural"],
+    travelStyle: "Family",
+    estimatedPrice: "$3,200",
+  },
+  {
+    id: 4,
+    name: "Trip 4",
+    imageUrls: ["/assets/images/sample.jpeg"],
+    itinerary: [{ location: "Sydney" }, { location: "Melbourne" }],
+    tags: ["Adventure", "Beach"],
+    travelStyle: "Group",
+    estimatedPrice: "$2,800",
+  },
+];
+
+export const users = [
+  {
+    id: 1,
+    name: "John Doe",
+    email: "john.doe@example.com",
+    imageUrl: "/assets/images/david.webp",
+    dateJoined: formatDate("2025-01-01"),
+    itineraryCreated: 10,
+    status: "user",
+  },
+  {
+    id: 2,
+    name: "Alice Smith",
+    email: "alice.smith@example.com",
+    imageUrl: "/assets/images/alice.webp",
+    dateJoined: formatDate("2024-11-15"),
+    itineraryCreated: 23,
+    status: "premium",
+  },
+  {
+    id: 3,
+    name: "Robert Johnson",
+    email: "robert.j@example.com",
+    imageUrl: "/assets/images/robert.webp",
+    dateJoined: formatDate("2025-02-20"),
+    itineraryCreated: 5,
+    status: "user",
+  },
+  {
+    id: 4,
+    name: "Emily Wilson",
+    email: "emily.w@example.com",
+    imageUrl: "/assets/images/emily.webp",
+    dateJoined: formatDate("2024-09-10"),
+    itineraryCreated: 42,
+    status: "admin",
+  },
+  {
+    id: 5,
+    name: "Michael Brown",
+    email: "michael.b@example.com",
+    imageUrl: "/assets/images/michael.webp",
+    dateJoined: formatDate("2025-03-05"),
+    itineraryCreated: 15,
+    status: "premium",
+  },
+];

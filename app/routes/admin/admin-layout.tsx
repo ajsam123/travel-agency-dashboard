@@ -16,9 +16,7 @@ const AdminLayout = () => {
           style={{ height: "100vh", position: "relative" }}
         >
           <NavItems />
-          <div>The navbar is right here in this place</div>
         </SidebarComponent>
-        {/* <div>hwfwfwgfuhwjgwhfwhfwfwfgwyfgywfwffhwfbw</div> */}
       </aside>
       <aside className="children">
         <Outlet />
