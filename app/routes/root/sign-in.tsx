@@ -1,5 +1,17 @@
+import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import React from "react";
-import { Link } from "react-router";
+import { Link, redirect } from "react-router";
+import { loginWithGoogle } from "~/appwrite/auth";
+import { account } from "~/appwrite/client";
+
+export async function clientLoader() {
+  try {
+    const user = await account.get();
+    if (!user.$id) return redirect("/");
+  } catch (e) {
+    console.log("Error fetching user", e);
+  }
+}
 
 const SignIn = () => {
   return (
@@ -15,14 +27,33 @@ const SignIn = () => {
               />
             </Link>
             <h1 className="p-28-bold text-dark-100">TourVisto</h1>
-            <article>
-              <h2 className="p-28-semibold text-dark-100 text-center">
-                Start your travel journey
-              </h2>
-
-              <p></p>
-            </article>
           </header>
+
+          <article>
+            <h2 className="p-28-semibold text-dark-100 text-center">
+              Start your travel journey
+            </h2>
+
+            <p className="p-18-regular text-center text-gray-100 !leading-7">
+              Sign in with google to manage destinations, itineraries, and user
+              activity with ease
+            </p>
+          </article>
+          <ButtonComponent
+            type="button"
+            iconCss="e-searh-icon"
+            className="button-class !h-11 !w-full"
+            onClick={loginWithGoogle}
+          >
+            <img
+              src="/assets/icons/google.svg"
+              alt="google"
+              className="size-5"
+            />
+            <span className="p-18-semibold text-white">
+              Sign in with google
+            </span>
+          </ButtonComponent>
         </div>
       </section>
     </main>
