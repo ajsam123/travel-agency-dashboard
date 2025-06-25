@@ -4,7 +4,11 @@ import { redirect } from "react-router";
 
 export const loginWithGoogle = async () => {
   try {
-    account.createOAuth2Session(OAuthProvider.Google);
+    account.createOAuth2Session(
+      OAuthProvider.Google,
+      "http://localhost:5173"
+      // "http://localhost:5173/login"
+    );
   } catch (e) {
     console.log("loginWithGoogle", e);
   }

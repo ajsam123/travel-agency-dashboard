@@ -12,7 +12,7 @@ export async function clientLoader() {
 
     const existingUser = await getExistingUser();
     if (existingUser?.status === "user") {
-      return redirect("/");
+      // return redirect("/");
     }
     return existingUser?.id ? existingUser : await storeUserData();
   } catch (e) {
