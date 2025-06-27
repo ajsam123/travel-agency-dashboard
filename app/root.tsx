@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 
+import * as Sentry from "@sentry/react-router";
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -63,6 +64,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;
+    Sentry.captureException(error);
   }
 
   return (

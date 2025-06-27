@@ -9,6 +9,7 @@ const { totalTrips, totalUsers, tripsCreated, userJoined, userRole } =
 export const clientLoader = async () => await getUser();
 const dashboard = ({ loaderData }: Route.ComponentProps) => {
   // const user = loaderData as unknown as User | null;
+
   return (
     <main className="dashboard wrapper">
       <Header
