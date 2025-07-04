@@ -11,8 +11,8 @@ export const loader = async () => {
   const data = await response.json();
   // console.log(data);
   return data.map((country: any) => ({
-    name: country.name.common,
-    flag: country.flags.svg,
+    name: country.flag + country.name.common,
+    // flag: country.flags.svg,
     coordinates: country.latlng,
     value: country.name.common,
     openStreetMap: country.maps?.openStreetMaps,
@@ -20,41 +20,17 @@ export const loader = async () => {
 };
 
 const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
-  const itemTemplate = (countryData: any) => (
-    <div className="flex items-center gap-1 pl-2">
-      <img
-        src={countryData.flag}
-        alt={countryData.text}
-        className="w-5 h-4 rounded-sm"
-      />
-      <span>{countryData.text}</span>
-    </div>
-  );
-
-  const valueTemplate = (countryData: any) => {
-    if (!countryData) return <span>Select a country</span>;
-    return (
-      <div className="flex items-center gap-1 pl-2">
-        <img
-          src={countryData.flag}
-          alt={countryData.text}
-          className="w-5 h-4 rounded-sm"
-        />
-        <span>{countryData.text}</span>
-      </div>
-    );
-  };
-
   const handleSubmit = async () => {};
+  const handleChange = (key: keyof TripFormData, value: string | number) => {};
   const countries = loaderData as Country[];
 
   const countryData = countries.map((country) => ({
     text: country.name,
     value: country.value,
-    flag: country.flag,
+    // flag: country.flag,
   }));
   return (
-    <main className="flex flex-col gap-10 p-5 pb-20">
+    <main className="flex flex-col gap-10 pb-20">
       <Header
         title="Add a new trip"
         description="View and edit AI generated travel plans"
@@ -67,10 +43,29 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
               id="country"
               dataSource={countryData}
               fields={{ text: "text", value: "value" }}
-              itemTemplate={itemTemplate}
-              valueTemplate={valueTemplate}
+              // itemTemplate={itemTemplate}
+              // valueTemplate={valueTemplate}
               placeholder="Select a country"
               className="combo-box"
+              change={(e: { value: string | undefined }) => {
+                if (e.value) {
+                  handleChange("country", e.value);
+                }
+              }}
+              allowFiltering
+              filtering={(e) => {
+                const query = e.text.toLowerCase();
+                e.updateData(
+                  countries
+                    .filter((country) =>
+                      country.name.toLowerCase().includes(query)
+                    )
+                    .map((country) => ({
+                      text: country.name,
+                      value: country.value,
+                    }))
+                );
+              }}
             />
           </div>
         </form>
