@@ -30,13 +30,13 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
     // flag: country.flag,
   }));
   return (
-    <main className="flex flex-col gap-10 pb-20">
+    <main className="flex flex-col gap-10 pb-20 wrapper">
       <Header
         title="Add a new trip"
         description="View and edit AI generated travel plans"
       />
       <section className="mt-2.5 wrapper-md">
-        <form action="trip-form" onSubmit={handleSubmit}>
+        <form className="trip-form" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="country">Country</label>
             <ComboBoxComponent
@@ -66,6 +66,17 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
                     }))
                 );
               }}
+            />
+          </div>
+          <div>
+            <label htmlFor="duration">Duration</label>
+            <input
+              // type="text"
+              id="duaration"
+              name="duration"
+              placeholder="Enter a number of days (5, 12 ....)"
+              className="form-input placeholder:text-gray-100"
+              onChange={(e) => handleChange("duration", Number(e.target.value))}
             />
           </div>
         </form>

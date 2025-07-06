@@ -535,8 +535,6 @@ body {
 
 .e-input-group-icon {
   position: absolute;
-  top: 50%;
-  right: 0.75rem; /* around 12px */
-  transform: translateY(-50%);
-  pointer-events: none; /* optional, allows clicks to pass through */
+  top: 45px;
+  right: 40px;
 }
