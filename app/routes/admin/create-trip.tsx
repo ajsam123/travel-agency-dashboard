@@ -11,6 +11,8 @@ import {
 } from "@syncfusion/ej2-react-maps";
 import { world_map } from "~/constants/world_map";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
+import { account } from "~/appwrite/client";
+import { useNavigate } from "react-router";
 
 export const loader = async () => {
   const response = await fetch(
@@ -33,6 +35,8 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
     event.preventDefault();
     setLoading(true);
 
+    const navigate = useNavigate();
+
     if (
       !formData.country ||
       !formData.travelStyle ||
@@ -43,6 +47,47 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
       setError("Please provide values for all fields");
       setLoading(false);
       return;
+    }
+
+    if (!formData.duration || formData.duration > 10) {
+      setError("Duration must be between 1 and 10 days");
+      setLoading(false);
+      return;
+    }
+
+    const user = await account.get();
+
+    if (!user.$id) {
+      console.error("user not authenticated");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/create-trip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          country: formData.country,
+          numberOfDays: formData.duration,
+          travelStyle: formData.travelStyle,
+          interests: formData.interest,
+          budget: formData.budget,
+          groupType: formData.groupType,
+          userId: user.$id,
+        }),
+      });
+
+      const result: CreateTripResponse = await response.json();
+
+      if (result?.id) navigate(`/trips/${result.id}`);
+      else console.error("Failed to generate the trip");
+      // console.log("user", user);
+      // console.log("formData", formData);
+    } catch (e) {
+      console.error("Error generating trip", e);
+    } finally {
+      setLoading(false);
     }
   };
   const countries = loaderData as Country[];
