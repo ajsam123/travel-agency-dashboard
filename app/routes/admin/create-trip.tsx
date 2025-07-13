@@ -31,11 +31,11 @@ export const loader = async () => {
 };
 
 const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
+  const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
-    const navigate = useNavigate();
 
     if (
       !formData.country ||

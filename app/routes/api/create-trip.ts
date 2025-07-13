@@ -104,11 +104,11 @@ For **each day**, include:
 
     const result = await database.createDocument(
       appwriteconfig.databaseId,
-      appwriteconfig.databaseId,
+      // appwriteconfig.databaseId,
       appwriteconfig.tripCollectionId,
       ID.unique(),
       {
-        tripDetails: JSON.stringify(trip),
+        tripDetail: JSON.stringify(trip),
         createdAt: new Date().toISOString(),
         imageUrls,
         userId,
