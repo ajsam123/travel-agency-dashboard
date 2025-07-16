@@ -76,7 +76,7 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
           userId: user.$id,
         }),
       });
-
+      console.log(response);
       const result: CreateTripResponse = await response.json();
 
       console.log(result);

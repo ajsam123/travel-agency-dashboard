@@ -20,6 +20,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const unsplashApiKey = process.env.UNSPLASH_ACCESS_KEY;
 
+  console.log(unsplashApiKey);
+
   try {
     const prompt = `
   🌍🧳 **Travel Planner Assistant Request**
@@ -112,7 +114,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     // console.log(trip);
 
     const imgResponse = await fetch(
-      `https://api.unsplash.com/search/photos?qQuery=${country} ${interests} ${travelStyle}&client_id=${unsplashApiKey}`
+      `https://api.unsplash.com/search/photos?query=${country} ${interests} ${travelStyle}&client_id=${unsplashApiKey}`
     );
 
     const imageUrls = (await imgResponse.json()).results
@@ -133,10 +135,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
 
     console.log(result);
-    return new Response(JSON.stringify({ id: result.$id }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return data({ id: result.$id });
   } catch (e) {
     console.error("error generating travel plan", e);
   }
