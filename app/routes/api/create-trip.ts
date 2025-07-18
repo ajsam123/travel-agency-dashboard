@@ -23,74 +23,52 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   console.log(unsplashApiKey);
 
   try {
-    const prompt = `
-  🌍🧳 **Travel Planner Assistant Request**
-
-  You are a professional AI travel planner helping a user plan an unforgettable ${numberOfDays}-day trip to **${country}**. Your goal is to craft a **vibrant, personalized, and realistic** itinerary that blends adventure, rest, local flavor, and culture, based on the user's preferences below.
-
-  🧑‍💼 **User Profile**
-  - 🧑‍🤝‍🧑 Group Type: ${groupType}
-  - 💸 Budget Level: ${budget} (e.g., shoestring, mid-range, luxury)
-  - 🛫 Travel Style: ${travelStyle} (e.g., relaxed, fast-paced, adventurous, cultural)
-  - 🎯 Interests: ${interest} (e.g., history, nature, food, nightlife, beaches, museums, hiking, shopping)
-  - 🗓️ Duration: ${numberOfDays} days
-  - 📌 Country: ${country}
-  - 🧾 Internal userId (no need to include in output): ${userId}
-
-  ---
-
-  🔍 **Itinerary Output Structure**
-
-  🎯 **Overview**  
-  Start with a short summary of what this trip will offer: e.g., “Explore the majestic landscapes of Iceland through waterfalls, hot springs, and Viking history!”
-
-  🗓️ **Day-by-Day Breakdown**  
-  For **each day**, include:
-  - 🌅 **Morning**: Activities (e.g., guided tours, hiking, markets)
-  - 🌞 **Afternoon**: Local experiences (e.g., museums, parks, food stops)
-  - 🌙 **Evening**: Relaxation or nightlife options
-  - 🍽️ **Dining Suggestions**: Recommend local dishes and restaurants
-  - 🚶 **Transport Mode**: Mention how the user can move (walk, metro, bus, rental)
-  - 💡 **Tips or Warnings**: Language, safety, customs, or booking tips
-
-  🏡 **Accommodation Recommendations**
-  - Suggest 1–2 lodging options per location based on budget and group type (e.g., hostels, B&Bs, hotels)
-  - Mention amenities that suit their travel style
-
-  🍴 **Must-Try Local Foods**
-  - Include 3–5 local meals/snacks per region and where to try them
-
-  🚗 **Transportation Strategy**
-  - Best ways to get around in the country (e.g., metro cards, bike rentals, car hire)
-  - Mention if public transport is safe, available, and affordable
-
-  🎭 **Cultural Etiquette**
-  - Customs, tipping, dress codes, or behaviors to note
-  - Local greetings or helpful phrases in the local language
-
-  🗺️ **Hidden Gems & Pro Tips**
-  - Add lesser-known but amazing spots for bonus value
-  - Include insider tips for skipping queues, saving money, or local secrets
-
-  💰 **Estimated Daily Expenses**
-  - Rough breakdown by accommodation, food, transport, and activity
-  - Tailor this to the budget level provided
-
-  ---
-
-  📌 **Format & Tone**
-  - Use clear markdown formatting with bold titles and bullet points
-  - Use **friendly, exciting tone** with **relevant emojis** for each section
-  - Avoid overloading — keep descriptions clear and inspiring
-
-  ⚠️ **Important**
-  - Do not fabricate places that don’t exist
-  - Be realistic with time and budget
-  - Avoid activities that require booking months in advance unless noted
-
-  🎉 Let’s make this a trip to remember!
-  `;
-
+    const prompt = `Generate a ${numberOfDays}-day travel itinerary for ${country} based on the following user information:
+    Budget: '${budget}'
+    Interests: '${interests}'
+    TravelStyle: '${travelStyle}'
+    GroupType: '${groupType}'
+    Return the itinerary and lowest estimated price in a clean, non-markdown JSON format with the following structure:
+    {
+    "name": "A descriptive title for the trip",
+    "description": "A brief description of the trip and its highlights not exceeding 100 words",
+    "estimatedPrice": "Lowest average price for the trip in USD, e.g.$price",
+    "duration": ${numberOfDays},
+    "budget": "${budget}",
+    "travelStyle": "${travelStyle}",
+    "country": "${country}",
+    "interests": ${interests},
+    "groupType": "${groupType}",
+    "bestTimeToVisit": [
+      '🌸 Season (from month to month): reason to visit',
+      '☀️ Season (from month to month): reason to visit',
+      '🍁 Season (from month to month): reason to visit',
+      '❄️ Season (from month to month): reason to visit'
+    ],
+    "weatherInfo": [
+      '☀️ Season: temperature range in Celsius (temperature range in Fahrenheit)',
+      '🌦️ Season: temperature range in Celsius (temperature range in Fahrenheit)',
+      '🌧️ Season: temperature range in Celsius (temperature range in Fahrenheit)',
+      '❄️ Season: temperature range in Celsius (temperature range in Fahrenheit)'
+    ],
+    "location": {
+      "city": "name of the city or region",
+      "coordinates": [latitude, longitude],
+      "openStreetMap": "link to open street map"
+    },
+    "itinerary": [
+    {
+      "day": 1,
+      "location": "City/Region Name",
+      "activities": [
+        {"time": "Morning", "description": "🏰 Visit the local historic castle and enjoy a scenic walk"},
+        {"time": "Afternoon", "description": "🖼️ Explore a famous art museum with a guided tour"},
+        {"time": "Evening", "description": "🍷 Dine at a rooftop restaurant with local wine"}
+      ]
+    },
+    ...
+    ]
+    }`;
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const AIresult = await model.generateContent([prompt]);
@@ -98,7 +76,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const response = AIresult.response; // 👈 Await the response
     const trip = response.text(); // 👈 Then get the text
 
-    console.log("🧾 Raw Gemini Response:", trip);
+    // console.log("🧾 Raw Gemini Response:", trip);
 
     // const trip = parseMarkdownToJson(rawText);
 
@@ -134,7 +112,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       }
     );
 
-    console.log(result);
+    // console.log(result);
     return data({ id: result.$id });
   } catch (e) {
     console.error("error generating travel plan", e);

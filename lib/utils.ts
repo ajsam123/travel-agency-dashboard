@@ -28,17 +28,31 @@ export function parseMarkdownToJson(markdownText: string): unknown | null {
 
 export function parseTripData(jsonString: string): Trip | null {
   try {
-    const data: Trip = JSON.parse(jsonString);
+    // Step 1: Clean any markdown fencing if present
+    const cleanedString = jsonString
+      .trim()
+      .replace(/^```(?:json)?/, "")
+      .replace(/```$/, "")
+      .trim();
 
-    return data;
+    // Step 2: Parse JSON
+    const raw = JSON.parse(cleanedString);
+
+    // Step 3: If wrapped inside a `tripDetail` object, extract it
+    const trip = raw.tripDetail ?? raw;
+
+    return trip;
   } catch (error) {
     console.error("Failed to parse trip data:", error);
     return null;
   }
 }
 
-export function getFirstWord(input: string = ""): string {
-  return input.trim().split(/\s+/)[0] || "";
+export function getFirstWord(input?: unknown): string {
+  if (typeof input !== "string") return "";
+
+  const words = input.trim().split(/\s+/);
+  return words[0] || "";
 }
 
 export const calculateTrendPercentage = (
